@@ -1,43 +1,26 @@
 function unpivot(){
   //Traer Libro
-  
   const libro=SpreadsheetApp.getActiveSpreadsheet();
   const HojaOrigen=libro.getSheetByName("Cr 7 con 20")
-  const TablaOrigen=HojaOrigen.getDataRange().getValue()
-
-
+  const TablaOrigen=HojaOrigen.getDataRange().getValues()
   //Identificar inicio y fin
-
   const colIUP = 2
   const colFUP = 118
-
-
   //Guardar los encabezados de la tabla destino
-
   const Encabezados = ["Fechas","Concepto","Valores"]
-
-
   //Arreglo
-
   let arr_Res=[]
   arr_Res.push(Encabezados)
-
-
   //Recorrer tabla origen
-
-  for(var fila=1;fila<TablaOrigen.length;fila++){
-    const Fechas=TablaOrigen[fila][0]
-    for(var columna=colIUP-1;columna<=colFUP;columna++){
-      const Concepto=TablaOrigen[0][columna]
-      const Valores=TablaOrigen[fila][columna]
-      const filanueva=[Fechas,Concepto,Valores]
-      arr_Res.push(filanueva)
+    for(var fila=1;fila<TablaOrigen.length;fila++){
+      const Fechas=TablaOrigen[fila][0]
+      for(var columna=colIUP-1;columna<=colFUP-1;columna++){
+        const Concepto=TablaOrigen[0][columna]
+        const Valores=TablaOrigen[fila][columna]
+        const filanueva=[Fechas,Concepto,Valores]
+        arr_Res.push(filanueva)
+      }
     }
-  }
-
-
-  const HojaDestino=libro.getSheetByName("Cr 7 con 20 unpivot")
-  HojaDestino.getRange(1,1,arr_Res.length,arr_Res[0].length)
-
-
+  const HojaDestino=libro.getSheetByName("Consolidado")
+  HojaDestino.getRange(1,1,arr_Res.length,arr_Res[0].length).setValues(arr_Res)
 }
